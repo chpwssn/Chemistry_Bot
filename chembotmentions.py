@@ -11,7 +11,7 @@ def handleword(word):
         #if we've already failed the word
         if word in failedlist:
             print word+" is in my failed list... not trying it again"
-            mention.reply('I\'m pretty sure '+word+' is either a chemical compound or a portion of what you ment but I wasn\'t able to find a CAS number for it.\n\nIf this is a problem, please [report it](http://redd.it/1wwur4)')
+            mention.reply('I\'m pretty sure '+word+' is either a chemical compound or a portion of what you ment but I wasn\'t able to find a CAS number for it.\n\nIf this is a problem, please '+footerGen(mention.permalink))
             return 0
         #This is a new or unfailed word
         else:
@@ -54,7 +54,7 @@ def handleword(word):
                         propertiesimage = pod[6][3][1][1]
                         propertiestext = pod[6][3][5][1]
                 #Build the reply
-                mention.reply('How about some more info on '+word+':\n\nThe CAS number'+isare+' '+formattedcas+'\n\nThe chemical structure is '+smiles+'\n\nChemical formula: '+formula+'\n\nNIST WebBook '+link+'.\n\n\nThe following is from Wolfram|Alpha:\n\n[structure image]('+structureimage+')\n\n[basic properties image]('+propertiesimage+')\n\nBasic properties: '+propertiestext+'\n\n\n\nProvided by your friendly neighborhood Chemistry_Bot\n\n[report an error](http://redd.it/1wwur4)')
+                mention.reply('How about some more info on '+word+':\n\nThe CAS number'+isare+' '+formattedcas+'\n\nThe chemical structure is '+smiles+'\n\nChemical formula: '+formula+'\n\nNIST WebBook '+link+'.\n\n\nThe following is from Wolfram|Alpha:\n\n[structure image]('+structureimage+')\n\n[basic properties image]('+propertiesimage+')\n\nBasic properties: '+propertiestext+'\n\n\n\nProvided by your friendly neighborhood Chemistry_Bot\n\n'+footerGen(mention.permalink))
                 #Add the mention ot the already done set
                 already_done.add(mention.id)
                 print "Success on "+word
@@ -67,13 +67,15 @@ def handleword(word):
                 print "Failure on "+word
                 with open("failedat.txt","a") as failedat:
                     failedat.write(word+'\n')
-                mention.reply('I\'m pretty sure '+word+' is either a chemical compound or a portion of what you ment but I wasn\'t able to find a CAS number for it.\n\nIf this is a problem, please [report it](http://redd.it/1wwur4)')
+                mention.reply('I\'m pretty sure '+word+' is either a chemical compound or a portion of what you ment but I wasn\'t able to find a CAS number for it.\n\nIf this is a problem, please '+footerGen(mention.permalink))
                 return 0
     else:
         #The word is not in our chemlist
         print word+' not in my list'
         return 0
 
+def footerGen(permalink):
+    return '[report a mistake](http://www.reddit.com/message/compose/?to=Chemistry_Bot&subject=Error%20Report&message='+permalink+')'
 
 #Connect to reddit
 r = praw.Reddit('ChemBot v2.0 by u/chpwssn. Responds to username mentions with information on chemical compounds listed in the comment.')
@@ -132,7 +134,7 @@ while looper:
                 chems_in_mention += handleword(two_word)
             #We didn't find a compound we recognized in the mention comment so we want to reply with an appology
             if chems_in_mention == 0:
-                mention.reply('Sorry, I was unable to find any valid chemicals in your comment, my list is rather small now but it will grow in the future!\n\nOnce I get a full list I will try again.\n\n[report an error](http://redd.it/1wwur4)')
+                mention.reply('Sorry, I was unable to find any valid chemicals in your comment, my list is rather small now but it will grow in the future!\n\nOnce I get a full list I will try again.\n\n'+footerGen(mention.permalink))
     #Simple rate limiting
     time.sleep(1)
     #end while loop

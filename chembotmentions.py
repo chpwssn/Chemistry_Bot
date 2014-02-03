@@ -11,6 +11,8 @@ def handleword(word):
         #if we've already failed the word
         if word in failedlist:
             print word+" is in my failed list... not trying it again"
+            mention.reply('I\'m pretty sure '+word+' is either a chemical compound or a portion of what you ment but I wasn\'t able to find a CAS number for it.\n\nIf this is a problem, please [report it](http://redd.it/1wwur4)')
+            return 0
         #This is a new or unfailed word
         else:
             print "Resolving "+word
@@ -65,6 +67,7 @@ def handleword(word):
                 print "Failure on "+word
                 with open("failedat.txt","a") as failedat:
                     failedat.write(word+'\n')
+                mention.reply('I\'m pretty sure '+word+' is either a chemical compound or a portion of what you ment but I wasn\'t able to find a CAS number for it.\n\nIf this is a problem, please [report it](http://redd.it/1wwur4)')
                 return 0
     else:
         #The word is not in our chemlist

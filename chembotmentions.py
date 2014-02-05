@@ -17,9 +17,12 @@ def handleword(word):
         else:
             print "Resolving "+word
             #Look up the CAS number, smiles and formula of the compound from CIR
-            cas_num = cirpy.resolve(word,'cas')
-            smiles = cirpy.resolve(word,'smiles')
-            formula = cirpy.resolve(word,'formula')
+            try:
+                cas_num = cirpy.resolve(word,'cas')
+                smiles = cirpy.resolve(word,'smiles')
+                formula = cirpy.resolve(word,'formula')
+            except:
+                cas_num = False
             #The chemical is defined if we have at least one CAS number
             if cas_num:
                 #Some compounds may have multiple CAS numbers so we want to handle the grammar
